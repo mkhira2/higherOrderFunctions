@@ -6,6 +6,12 @@
 // it should run the callback on each element in the array.
 // ----------------------------
 
+var forEach = function(array, callback) {
+	for (var i = 0; i < array.length; i++) {
+		callback(array[i])
+	}
+}
+
 //  Part II
 // ----------------------------
 // write your own map() function.
@@ -13,6 +19,14 @@
 // it should return a new array, where every element in the 
 // original has been transformed by the callback. .
 // ----------------------------
+
+var map = function(array, callback) {
+	var newArray = []
+	for (var i = 0; i < array.length; i++) {
+		newArray.push(callback(array[i]))
+	}
+	return newArray
+}
 
 
 //  Part III
@@ -22,6 +36,16 @@
 // it should return a new array, where elements have been 
 // kept or excluded according to the callback. 
 // ----------------------------
+
+var filter = function(array, callback) {
+	var newArray = []
+	for (var i = 0; i < array.length; i++) {
+		if (callback(array[i])) {
+			newArray.push(array[i])
+		}
+	}
+	return newArray
+}
 
 
 //  Part IV
@@ -42,16 +66,24 @@
 // look at the tests for clarification.
 // ----------------------------
 
-var reduce = function(arr,cb,start) {
-	arr.forEach(function(el) {
-		start = cb(start,el)
-	})
-	return start
+var reduce = function(array, callback, value) {
+	var acc = value
+	for (var i = 0; i < array.length; i++) {
+		acc = callback(acc, array[i])
+	}
+	return acc
 }
+
+var array = [1,2,3]
+
+var callback = function(input1, input2) {
+	return input1 + input2
+}
+
 
 //  HARD MODE
 // ----------------------------
-// using array.sort(), sort the following array
+// using the built-in array.sort(), sort the following array
 // of people by name
 // ----------------------------
 
@@ -62,12 +94,21 @@ var people = [
     {name:"Justin", alma_mater:"Univ of Florida"}
 ]
 
+people.sort(function(a,b) {
+    return a.name > b.name
+})
+
+
 // ----------------------------
 // Using array.map(), array.filter(), and array.sort() on the
 // array below:
 // - filter for customers whose first-names start with 'J',
 // - map to their fullnames,
 // - and then sort the items alphabetically by fullname
+
+// store the resulting mapped, filtered, and sorted array
+// under the variable name `newCustomers`. i'll look 
+// for that name in my tests.
 // ----------------------------
 
 var customers = [
@@ -158,28 +199,23 @@ describe('reduce()', function(){
 			function(acc,el) {
 				return acc + `<a href="#${el.replace(' ','-')}">${el}</a>`
 			}, '')
-		assert.equal(htmlString, '<a href="#home">home</a><a href="#about">about</a><a href="#contact-us">contact us</a>')
+
+		assert.equal(htmlString, 
+			'<a href="#home">home</a><a href="#about">about</a><a href="#contact-us">contact us</a>')
 	})
 })
-'<a href="#home">home</a><a href="#about">about</a><a href="#contact-us">contact us</a>'
-'<a href="#home">home</a><a href="#about">about</a><a href="#contact-us">contact</a>'
-describe('array.sort()', function(){
-	it("should take two inputs", function(){
-		checkFuncBasics('people.sort')
-	})
-	it("Your function should have sorted the array called 'people' into alphabetical order", function(){
+
+describe('people', function(){
+	it("should be sorted into alphabetical order", function(){
 		expect(people[0].name).to.equal("Brian")
 		expect(people[1].name).to.equal("Jesse")
 		expect(people[2].name).to.equal("Justin")
 	})
 })
 
-describe('array.sort()', function(){
-	it("should ", function(){
-		checkFuncBasics('people.sort')
-	})
-	it("Your function should have filtered customers whose first names start with J, map to their full names and then sort the customers alphabetically", function(){
-		expect(results[0].fullname).to.equal("Jack White")
-		expect(results[1].fullname).to.equal("Joe Blogs")
+describe('newCustomers', function(){
+	it("`newCustomers` should be a transformation of the customers array according to the criteria described in worksheet.js", function(){
+		expect(newCustomers[0].fullname).to.equal("Jack White")
+		expect(newCustomers[1].fullname).to.equal("Joe Blogs")
 	})
 })
