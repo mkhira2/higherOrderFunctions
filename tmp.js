@@ -76,7 +76,7 @@ var reduce = function(array, callback, value) {
 
 var array = [1,2,3]
 
-var callback = function(input1, input2) {
+var sum = function(input1, input2) {
 	return input1 + input2
 }
 
